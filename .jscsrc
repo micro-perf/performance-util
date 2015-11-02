@@ -1,0 +1,7 @@
+{
+    "preset" : "jquery",
+    "maximumLineLength" : {
+    	"value" : 400,
+    	"allExcept" : ["comments","urlComments"]
+    }
+}
