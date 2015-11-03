@@ -16,3 +16,7 @@ _wrap_ ( function( global ) {
 		}
 	}
 } );
+
+function _wrap_ ( fp ) {
+	fp( window );
+}

@@ -19,6 +19,7 @@ module.exports = function(config) {
       ]
     },
     files: [
+    'bower_components/perf-polyfill/perf.js',
     'test/wrap.js',
     'src/perf-util.js',
     'test/perf/*.test.js'
