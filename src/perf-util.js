@@ -1,13 +1,21 @@
 _wrap_ ( function( global ) {
 	var nameInfo = {};
 
-	global.performance.markStart = function( markName ) {
-		var count = nameInfo[ markName ];
+	function mark( name, type ) {
+		var count = nameInfo[ name ];
 		if ( count === undefined ) {
-			count = nameInfo[ markName ] = 0;
+			count = nameInfo[ name ] = 0;
 		}
-		nameInfo[ markName ] = ++count;
-		global.performance.mark( markName + "-start-" + count );
+		nameInfo[ name ] = ++count;
+		global.performance.mark( name + "-" + type + "-" + count );
+	}
+
+	global.performance.markStart = function( name ) {
+		mark( name, "start" );
+	}
+
+	global.performance.markEnd = function( name ) {
+		mark( name, "end" );
 	}
 
 	return function() {
