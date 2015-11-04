@@ -10,11 +10,11 @@ describe("performance.markStart", function() {
 		// Given
 		// When
 		mock.performance.markStart("foo");
-		var nameInfo = getPerformanceInfo().nameInfo;
+		var nameCount = getPerformanceInfo().nameCount;
 		var entryList = mock.performance.getEntries({name:"foo-start-1"});
 		
 		// Then
-		expect(nameInfo.foo).toBe(1);
+		expect(nameCount.foo).toBe(1);
 		expect(entryList.length).toBe(1);
 		expect(entryList[0].name).toBe("foo-start-1");
 
@@ -39,11 +39,11 @@ describe("performance.markEnd", function() {
 		mock.performance.markStart("foo");
 		// When
 		mock.performance.markEnd("foo");
-		var nameInfo = getPerformanceInfo().nameInfo;
+		var nameCount = getPerformanceInfo().nameCount;
 		var entryList = mock.performance.getEntries({name:"foo-end-1"});
 		
 		// Then
-		expect(nameInfo.foo).toBe(1);
+		expect(nameCount.foo).toBe(1);
 		expect(entryList.length).toBe(1);
 		expect(entryList[0].name).toBe("foo-end-1");
 
@@ -72,14 +72,53 @@ describe("performance.groupMeasure", function() {
 
 		// When
 		mock.performance.groupMeasure("foo");
-		var nameInfo = getPerformanceInfo().nameInfo;
+		var nameCount = getPerformanceInfo().nameCount;
 		var entryList = mock.performance.getEntries({name:"foo-measure-1"});
 		
 		// Then
-		expect(nameInfo.foo).toBe(1);
+		expect(nameCount.foo).toBe(1);
 		expect(entryList.length).toBe(1);
 		expect(entryList[0].name).toBe("foo-measure-1");
 		expect(entryList[0].duration > 0).toBe(true);
+
+	});
+
+	afterEach(function() {
+		mock.performance.clearMarks();
+		mock.performance.clearMeasures();
+	});
+});
+
+describe("performance.analyzeMeasure", function() {
+	var mock = {}, getPerformanceInfo;
+	
+	beforeEach(function() {
+		mock.performance = window.performance;
+		getPerformanceInfo = cache(mock);
+	});
+
+	it("analyzeMeasure have to return info.", function() {
+		// Given
+		function nonp(){
+			for (var i = 0; i < 10000; i++) {
+			}			
+		};
+
+		for (var i = 0; i < 10; i++) {
+			mock.performance.markStart("foo");
+			nonp();
+			mock.performance.markEnd("foo");
+			mock.performance.groupMeasure("foo");
+		}
+
+		// When
+		var info = mock.performance.analyzeMeasure("foo");
+
+		// Then
+		expect(info.count).toBe(10);
+		expect(info.average > 0).toBe(true);
+		expect(info.median > 0).toBe(true);
+		expect(info.durationList.length).toBe(10);
 
 	});
 
