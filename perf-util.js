@@ -58,6 +58,25 @@ _wrap_ ( function( global ) {
 		}
 	}
 
+	global.performance.searchEntries = function( filter ) {
+
+		if ( !filter ){
+			return global.performance.getEntries();
+		}
+		
+		var perfEntryList;
+		if ( filter.entryType ) {
+			perfEntryList = global.performance.getEntriesByType( filter.entryType );
+		} else {
+			perfEntryList = global.performance.getEntries();
+		}
+
+		return perfEntryList.filter( function( entry ) {
+			return filter.name.test( entry.name )
+		} );
+
+	}
+
 	return function() {
 		return {
 			"nameCount": nameCount

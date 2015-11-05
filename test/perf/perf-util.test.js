@@ -127,3 +127,98 @@ describe("performance.analyzeMeasure", function() {
 		mock.performance.clearMeasures();
 	});
 });
+
+describe("global.performance.searchEntries", function() {
+	var mock = {}, getPerformanceInfo;
+	
+	beforeEach(function() {
+		mock.performance = window.performance;
+		getPerformanceInfo = cache(mock);
+	});
+
+	it("If searchEntries has not parameter then it has to return all entryList.", function() {
+		// Given
+		function nonp(){
+			for (var i = 0; i < 10000; i++) {
+			}			
+		};
+
+		mock.performance.mark("bar");
+		for (var i = 0; i < 10; i++) {
+			mock.performance.markStart("foo");
+			nonp();
+			mock.performance.markEnd("foo");
+			mock.performance.groupMeasure("foo");
+		}
+		mock.performance.mark("baz");
+		var allEntryList = mock.performance.getEntries();
+
+		// When
+		var info = mock.performance.searchEntries();
+
+
+		// Then
+		expect(info.length).toBe(allEntryList.length);
+
+	});
+
+	it("If searchEntries has name in parameter then it has to return matched entryList.", function() {
+		// Given
+		function nonp(){
+			for (var i = 0; i < 10000; i++) {
+			}			
+		};
+
+		mock.performance.mark("bar");
+		for (var i = 0; i < 10; i++) {
+			mock.performance.markStart("foo");
+			nonp();
+			mock.performance.markEnd("foo");
+			mock.performance.groupMeasure("foo");
+		}
+		mock.performance.mark("baz");
+
+		// When
+		var info = mock.performance.searchEntries( {
+			"name": /foo/
+		} );
+
+
+		// Then
+		expect(info.length).toBe(30);
+
+	});
+
+	it("If searchEntries has name, entryType in parameter then it has to return matched entryList.", function() {
+		// Given
+		function nonp(){
+			for (var i = 0; i < 10000; i++) {
+			}			
+		};
+
+		mock.performance.mark("bar");
+		for (var i = 0; i < 10; i++) {
+			mock.performance.markStart("foo");
+			nonp();
+			mock.performance.markEnd("foo");
+			mock.performance.groupMeasure("foo");
+		}
+		mock.performance.mark("baz");
+
+		// When
+		var info = mock.performance.searchEntries( {
+			"name": /foo/,
+			"entryType": "measure"
+		} );
+
+
+		// Then
+		expect(info.length).toBe(10);
+
+	});
+
+	afterEach(function() {
+		mock.performance.clearMarks();
+		mock.performance.clearMeasures();
+	});
+});
