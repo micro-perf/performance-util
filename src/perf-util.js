@@ -24,6 +24,11 @@ _wrap_ ( function( global ) {
 		}
 	}
 
+	/**
+	 * This method set to start mark.
+	 * @name performance.markStart
+	 * @param {String} [name] - name
+	 */
 	global.performance.markStart = function( name ) {
 		var count = nameCount[ name ];
 		if ( count === undefined ) {
@@ -33,15 +38,35 @@ _wrap_ ( function( global ) {
 		mark( name, "start", nameCount[ name ] );
 	}
 
+	/**
+	 * This method set to end mark.
+	 * @name performance.markEnd
+	 * @param {String} [name] - name
+	 */
 	global.performance.markEnd = function( name ) {
 		mark( name, "end", nameCount[ name ] );
 	}
 
+	/**
+	 * This method set to measure.
+	 * @name performance.markEnd
+	 * @param {String} [name] - name
+	 */
 	global.performance.groupMeasure = function( name ) {
 		var count = nameCount[name];
 		global.performance.measure( name + "-measure-" + count, name + "-start-" + count, name + "-end-" + count );
 	}
 
+	/**
+	 * This method get to analyze to information having count, average, median, durationList.
+	 * The count is total mark count.
+	 * The average is average duration of measure
+	 * The median is median duration of measure
+	 * The durationList is list of duration.
+	 * @name performance.markEnd
+	 * @param {String} [name] - name
+	 * @return {Array} performanceEntryList
+	 */
 	global.performance.analyzeMeasure = function( name ) {
 		var entryList = global.performance.getEntriesByType( "measure" );
 		var durationList = entryList.filter( function( v ) {
@@ -58,6 +83,14 @@ _wrap_ ( function( global ) {
 		}
 	}
 
+	/**
+	 * This method search entry. It can use name and entryType.
+	 * @name performance.searchEntries
+	 * @param {Object} [PerformanceEntryFilterOptions] - filter
+	 * @param {String} [PerformanceEntryFilterOptions.entryType] - entryType of PerformanceEntry object.
+	 * @param {Regexp} [PerformanceEntryFilterOptions.name] - name of PerformanceEntry object.
+	 * @return {Array} performanceEntryList
+	 */
 	global.performance.searchEntries = function( filter ) {
 
 		if ( !filter ) {
