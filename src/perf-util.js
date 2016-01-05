@@ -30,12 +30,17 @@ _wrap_ ( function( global ) {
 	 * @param {String} [name] - name
 	 */
 	global.performance.markStart = function( name ) {
-		var count = nameCount[ name ];
-		if ( count === undefined ) {
-			count = nameCount[ name ] = 0;
+		if ( nameCount[ name ] === undefined ) {
+			nameCount[ name ] = {
+				"count": 0,
+				"isMarkEndCalled": false
+			}
+			count = 0;
 		}
-		nameCount[ name ] = ++count;
-		mark( name, "start", nameCount[ name ] );
+		var count = nameCount[ name ].count;
+		nameCount[ name ].count = ++count;
+		nameCount[ name ].isMarkEndCalled = false;
+		mark( name, "start", nameCount[ name ].count );
 	}
 
 	/**
@@ -44,16 +49,24 @@ _wrap_ ( function( global ) {
 	 * @param {String} [name] - name
 	 */
 	global.performance.markEnd = function( name ) {
-		mark( name, "end", nameCount[ name ] );
+		if ( !nameCount[ name ] || ( nameCount[ name ] && nameCount[ name ].isMarkEndCalled ) ) {
+			throw new Error( "You don`t have to same markEnd name.(" + name + ")" );
+		} else {
+			nameCount[ name ].isMarkEndCalled = true;
+			var count = nameCount[ name ].count;
+			mark( name, "end", count );
+			groupMeasure( name );
+		}
 	}
 
 	/**
 	 * This method set to measure.
+	 * @private
 	 * @name performance.markEnd
 	 * @param {String} [name] - name
 	 */
-	global.performance.groupMeasure = function( name ) {
-		var count = nameCount[name];
+	function groupMeasure( name ) {
+		var count = nameCount[name].count;
 		global.performance.measure( name + "-measure-" + count, name + "-start-" + count, name + "-end-" + count );
 	}
 
