@@ -6,7 +6,7 @@
     "YongWoo Jeon<yongwoo.jeon@navercorp.com>"
   ],
   "description": "Performance util",
-  "main": "/src/perf-util.js",
+  "main": "perf-util.js",
   "keywords": [
     "performance"
   ],
