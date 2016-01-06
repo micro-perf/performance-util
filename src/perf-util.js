@@ -80,7 +80,7 @@ _wrap_ ( function( global ) {
 	 * @param {String} [name] - name
 	 * @return {Array} performanceEntryList
 	 */
-	global.performance.analyzeMeasure = function( name ) {
+	global.performance.analyzeMark = function( name ) {
 		var entryList = global.performance.getEntriesByType( "measure" );
 		var durationList = entryList.filter( function( v ) {
 			return v.name.indexOf( name + "-measure-" ) > -1;

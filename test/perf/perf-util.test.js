@@ -66,7 +66,7 @@ describe("performance.markEnd", function() {
 	});
 });
 
-describe("performance.analyzeMeasure", function() {
+describe("performance.analyzeMark", function() {
 	var mock = {}, getPerformanceInfo;
 	
 	beforeEach(function() {
@@ -74,7 +74,7 @@ describe("performance.analyzeMeasure", function() {
 		getPerformanceInfo = cache(mock);
 	});
 
-	it("analyzeMeasure have to return info.", function() {
+	it("analyzeMark have to return info.", function() {
 		// Given
 		function nonp(){
 			for (var i = 0; i < 10000; i++) {
@@ -88,7 +88,7 @@ describe("performance.analyzeMeasure", function() {
 		}
 
 		// When
-		var info = mock.performance.analyzeMeasure("foo");
+		var info = mock.performance.analyzeMark("foo");
 
 		// Then
 		expect(info.count).toBe(10);

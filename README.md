@@ -5,7 +5,7 @@
 ## Support features
 - **markStart** : This method set to start mark.
 - **markEnd** : This method set to end mark. and It called measure between `markStart` and `markEnd`.
-- **analyzeMeasure** : This method get to analyze to information having count, average, median, durationList.
+- **analyzeMark** : This method get to analyze to information having count, average, median, durationList.
 - **searchEntries** : This method can search entry using advanced option. (like `Regexp`)
 
 ## Sample
