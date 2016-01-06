@@ -49,14 +49,13 @@ _wrap_ ( function( global ) {
 	 * @param {String} [name] - name
 	 */
 	global.performance.markEnd = function( name ) {
-		if( !nameCount[ name ] || ( nameCount[ name ] && nameCount[ name ].isMarkEndCalled ) ){
-			throw new Error( "You don`t have to same markEnd name.("+name+")" );
+		if ( !nameCount[ name ] || ( nameCount[ name ] && nameCount[ name ].isMarkEndCalled ) ) {
+			throw new Error( "You don`t have to same markEnd name.(" + name + ")" );
 		} else {
 			nameCount[ name ].isMarkEndCalled = true;
 			var count = nameCount[ name ].count;
 			mark( name, "end", count );
 			groupMeasure( name );
-			
 		}
 	}
 
